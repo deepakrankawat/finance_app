@@ -1,0 +1,43 @@
+import 'package:flutter/material.dart';
+import '../utils/size_config.dart';
+
+class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+  final List<Widget>? actions;
+  final bool showBack;
+
+  const CustomAppBar({
+    Key? key,
+    required this.title,
+    this.actions,
+    this.showBack = false,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    SizeConfig.init(context); // Ensure SizeConfig is initialized
+
+    return AppBar(
+      backgroundColor: Colors.white,
+      elevation: 3,
+      leading: showBack
+          ? IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.black),
+              onPressed: () => Navigator.pop(context),
+            )
+          : null,
+      title: Text(
+        title,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 2.2 * SizeConfig.textMultiplier, // Responsive text
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      actions: actions,
+    );
+  }
+
+  @override
+  Size get preferredSize => Size.fromHeight(7 * SizeConfig.heightMultiplier); // Responsive height
+}
