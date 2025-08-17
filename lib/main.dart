@@ -1,21 +1,16 @@
 
+import 'package:finance_app/MyApp.dart';
 import 'package:finance_app/controller/ChatController.dart';
-import 'package:finance_app/controller/GroupChatController.dart';
-import 'package:finance_app/view/lock_create_view.dart';
-import 'package:finance_app/view/lock_view.dart';
-import 'package:finance_app/view/login_view.dart';
+import 'package:finance_app/controller/auth_controller.dart';
+import 'package:finance_app/controller/lock_controller.dart';
+import 'package:finance_app/firebase_options.dart';
+import 'package:finance_app/services/chat_service.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'MyApp.dart';
-import 'controller/auth_controller.dart';
-import 'controller/lock_controller.dart';
-import 'firebase_options.dart';
-import 'view/home_view.dart';
-import 'view/otp_screen.dart';
-import 'view/phone_number_auth.dart';
-import 'view/signup_view.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/instance_manager.dart';
 
 void main() async {
   
@@ -24,7 +19,7 @@ void main() async {
    await FirebaseAppCheck.instance.activate(
     // For Android, use PlayIntegrityProvider (recommended) or SafetyNetProvider.
     // You must register your app's SHA-256 fingerprint in the Firebase console.
-    androidProvider: AndroidProvider.playIntegrity, // Recommended for new apps
+    androidProvider: kDebugMode ? AndroidProvider.debug : AndroidProvider.playIntegrity,
     // androidProvider: AndroidProvider.safetyNet, // Alternative for older devices
     // androidProvider: AndroidProvider.debug, // For local development/testing (requires debug token registration)
 
@@ -34,10 +29,16 @@ void main() async {
     // appleProvider: AppleProvider.deviceCheck, // For older iOS versions
     // appleProvider: AppleProvider.debug, // For local development/testing (requires debug token registration)
   );
+  if (kDebugMode) {
+    FirebaseAppCheck.instance.onTokenChange.listen((token) {
+      // ignore: avoid_print
+      print("App Check token: $token");
+    });
+  }
   Get.put(AuthController());     // Initialize auth controller
   Get.put(LockController());     // LockController will auto-run onInit()
-  Get.put(ChatController());     // Initialize ChatController
-  Get.put(GroupChatController()); // Initialize GroupChatController
+     // Initialize ChatController
+
   runApp(const MyApp());
 }
 

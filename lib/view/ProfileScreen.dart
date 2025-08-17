@@ -4,14 +4,14 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:finance_app/controller/auth_controller.dart';
 import 'package:finance_app/controller/UploadDataController.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class Profileview extends StatefulWidget {
+  const Profileview({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<Profileview> createState() => _ProfileviewState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _ProfileviewState extends State<Profileview> {
   final AuthController authController = Get.find<AuthController>();
   final UploadDataController uploadDataController = Get.put(UploadDataController());
   final FirebaseAuth _auth = FirebaseAuth.instance;

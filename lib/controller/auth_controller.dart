@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance_app/model/UserDataModel.dart';
 import 'package:finance_app/view/home_view.dart';
-import 'package:finance_app/view/login_phone_view.dart';
+import 'package:finance_app/view/login_view.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -259,5 +260,11 @@ Future<void> loginWithGoogle() async {
 
   void _setLoading(bool value) {
     isLoading.value = value;
+  }
+
+  Stream<List<UserModel>> getAllUsers() {
+    return _firestore.collection("users").snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) => UserModel.fromMap(doc.data())).toList();
+    });
   }
 }

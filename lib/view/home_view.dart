@@ -1,9 +1,12 @@
 import 'package:finance_app/Home_screen.dart';
 import 'package:finance_app/controller/auth_controller.dart';
+import 'package:finance_app/view/AllUsersScreen.dart';
+import 'package:finance_app/view/FullScreenImageView.dart';
 import 'package:finance_app/view/NotesScreen.dart';
 import 'package:finance_app/view/ProfileScreen.dart';
-import 'package:finance_app/view/chat/chat_list_screen.dart';
-import 'package:finance_app/view/chat/chat_screen.dart';
+
+
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -32,9 +35,8 @@ class HomeView extends StatelessWidget {
         body:  TabBarView(
           children: [
             NotesScreen(),
-            TransactionsTabPage(),
-            ChatListScreen(),
-            ProfileScreen(),
+            const Center(child: Text('Home')),
+            Profileview(),
           ],
         ),
       ),

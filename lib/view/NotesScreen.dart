@@ -1,5 +1,6 @@
 import 'package:finance_app/controller/NoteController.dart';
 import 'package:finance_app/view/AddEditNoteScreen.dart';
+import 'package:finance_app/view/FullScreenImageView.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -25,8 +26,22 @@ class NotesScreen extends StatelessWidget {
                 margin: const EdgeInsets.all(8.0),
                 child: ListTile(
                   title: Text(note.title),
-                  subtitle: Text(
-                    '${note.content}\nCreated: ${DateFormat.yMd().add_jm().format(note.createdAt)}\nUpdated: ${DateFormat.yMd().add_jm().format(note.updatedAt)}',
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(note.content),
+                      if (note.attachmentUrl != null &&
+                          note.attachmentUrl!.isNotEmpty)
+                        GestureDetector(
+                          onTap: () {
+                            Get.to(
+                                () => FullScreenImageView(imageUrl: note.attachmentUrl!));
+                          },
+                          child: Image.network(note.attachmentUrl!),
+                        ),
+                      Text('Created: ${DateFormat.yMd().add_jm().format(note.createdAt)}\nUpdated: ${DateFormat.yMd().add_jm().format(note.updatedAt)}'
+                      ),
+                    ], 
                   ),
                   isThreeLine: true,
                   onTap: () {
@@ -36,6 +51,7 @@ class NotesScreen extends StatelessWidget {
                     icon: const Icon(Icons.delete, color: Colors.redAccent),
                     onPressed: () {
                       Get.defaultDialog(
+                        backgroundColor: Colors.redAccent,
                         title: "Delete Note",
                         middleText:
                             "Are you sure you want to delete this note?",

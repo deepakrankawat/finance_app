@@ -6,6 +6,7 @@ class NoteModel {
   final String content;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final String? attachmentUrl;
 
   NoteModel({
     this.id,
@@ -13,6 +14,7 @@ class NoteModel {
     required this.content,
     required this.createdAt,
     required this.updatedAt,
+    this.attachmentUrl,
   });
 
   Map<String, dynamic> toMap() {
@@ -21,6 +23,7 @@ class NoteModel {
       'content': content,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
+      'attachmentUrl': attachmentUrl,
     };
   }
 
@@ -31,6 +34,7 @@ class NoteModel {
       content: map['content'] ?? '',
       createdAt: (map['createdAt'] as Timestamp).toDate(),
       updatedAt: (map['updatedAt'] as Timestamp).toDate(),
+      attachmentUrl: map['attachmentUrl'],
     );
   }
 }

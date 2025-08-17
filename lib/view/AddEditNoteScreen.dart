@@ -1,3 +1,4 @@
+import 'package:finance_app/controller/NoteAttachmentController.dart';
 import 'package:finance_app/controller/NoteController.dart';
 import 'package:finance_app/model/NoteModel.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,7 @@ class AddEditNoteScreen extends StatefulWidget {
 
 class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
   final noteController = Get.find<NoteController>();
+  final attachmentController = Get.put(NoteAttachmentController());
   final titleController = TextEditingController();
   final contentController = TextEditingController();
 
@@ -23,6 +25,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
     if (widget.note != null) {
       titleController.text = widget.note!.title;
       contentController.text = widget.note!.content;
+      attachmentController.attachmentUrl.value = widget.note!.attachmentUrl ?? '';
     }
   }
 
@@ -58,6 +61,20 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
               ),
             ),
             const SizedBox(height: 16),
+            Obx(() {
+              if (attachmentController.attachmentUrl.value.isNotEmpty) {
+                return Image.network(attachmentController.attachmentUrl.value);
+              }
+              return const SizedBox.shrink();
+            }),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                attachmentController.pickAndUploadAttachment(widget.note?.id ?? noteController.notes.length.toString());
+              },
+              child: const Text("Add Attachment"),
+            ),
+            const SizedBox(height: 16),
             Obx(() => ElevatedButton(
                   onPressed: noteController.isLoading.value
                       ? null
@@ -71,7 +88,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
                           }
 
                           if (widget.note == null) {
-                            await noteController.addNote(title, content);
+                            await noteController.addNote(title, content, attachmentUrl: attachmentController.attachmentUrl.value);
                           } else {
                             final updatedNote = NoteModel(
                               id: widget.note!.id,
@@ -79,7 +96,7 @@ class _AddEditNoteScreenState extends State<AddEditNoteScreen> {
                               content: content,
                               createdAt: widget.note!.createdAt,
                               updatedAt: DateTime.now(),
-                              
+                              attachmentUrl: attachmentController.attachmentUrl.value,
                             );
                             await noteController.updateNote(updatedNote);
                           }

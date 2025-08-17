@@ -3,6 +3,7 @@ import 'package:finance_app/controller/auth_controller.dart';
 import 'package:finance_app/view/Phone_number_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:pinput/pinput.dart';
 
 
 class OtpView extends StatelessWidget {
@@ -17,6 +18,13 @@ class OtpView extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
+            Pinput(controller: otpController,
+            length: 6,
+            defaultPinTheme: PinTheme(
+              width: 56,
+              height: 56,),
+            ),
+            const SizedBox(height: 20),
             TextField(
               controller: otpController,
               decoration: const InputDecoration(

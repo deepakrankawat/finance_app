@@ -39,7 +39,7 @@ class NoteController extends GetxController {
     }
   }
 
-  Future<void> addNote(String title, String content) async {
+  Future<void> addNote(String title, String content, {String? attachmentUrl}) async {
     if (userId == null) return;
 
     isLoading.value = true;
@@ -49,6 +49,7 @@ class NoteController extends GetxController {
         content: content,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
+        attachmentUrl: attachmentUrl,
       );
       await _firestore.collection('users').doc(userId).collection('notes').add(newNote.toMap());
       fetchNotes(); // Refresh notes after adding

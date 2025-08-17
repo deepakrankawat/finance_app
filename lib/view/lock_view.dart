@@ -1,9 +1,10 @@
+import 'package:finance_app/view/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controller/lock_controller.dart';
 import '../controller/auth_controller.dart';
 import 'home_view.dart';
-import 'login_phone_view.dart';
+
 
 class LockScreen extends StatefulWidget {
   const LockScreen({super.key});

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'package:finance_app/controller/auth_controller.dart';
 import 'package:finance_app/controller/lock_controller.dart';
@@ -8,6 +7,7 @@ import 'package:finance_app/view/lock_view.dart';
 import 'package:finance_app/view/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,10 +29,10 @@ class _SplashScreenState extends State<SplashScreen> {
         Get.off(
           () {
             if (lockController.hasPin.value == false && lockController.isLocked.value == false) {
-              return const CreatePinScreen();
+              return const CircularProgressIndicator() ;
             }
             if (!lockController.hasPin.value) {
-              return const CreatePinScreen();  // 1️⃣ No PIN created
+              return CreatePinScreen();  // 1️⃣ No PIN created
             }
 
             if (lockController.isLocked.value) {

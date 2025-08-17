@@ -13,6 +13,7 @@ class UploadDataController extends GetxController {
 
   RxString imageUrl = RxString(''); // Observable for image URL
   RxBool isLoading = false.obs;
+  final RxBool _isPickerActive = false.obs;
 
   @override
   void onInit() {
@@ -22,16 +23,24 @@ class UploadDataController extends GetxController {
   }
 
   Future<void> pickAndUploadImage() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? selectedImage = await picker.pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 1024, // Limit width to 1024 pixels
-      maxHeight: 1024, // Limit height to 1024 pixels
-      imageQuality: 80, // Compress image quality to 80%
-    );
+    if (_isPickerActive.value) {
+      return;
+    }
+    _isPickerActive.value = true;
+    try {
+      final ImagePicker picker = ImagePicker();
+      final XFile? selectedImage = await picker.pickImage(
+        source: ImageSource.gallery,
+        maxWidth: 1024, // Limit width to 1024 pixels
+        maxHeight: 1024, // Limit height to 1024 pixels
+        imageQuality: 80, // Compress image quality to 80%
+      );
 
-    if (selectedImage != null) {
-      await _uploadImage(selectedImage);
+      if (selectedImage != null) {
+        await _uploadImage(selectedImage);
+      }
+    } finally {
+      _isPickerActive.value = false;
     }
   }
 
@@ -66,9 +75,8 @@ class UploadDataController extends GetxController {
 
       // Update Firestore user document
       await _firestore.collection('users').doc(_auth.currentUser!.uid).set({
-        'photourl': newImageUrl,
-        'name': _auth.currentUser!.displayName ?? '',
-        'email': _auth.currentUser!.email ?? '',
+        'photoUrl': newImageUrl,
+       
       }, SetOptions(merge: true));
     } catch (e) {
       Get.snackbar("Error", "Failed to update user profile: $e");
